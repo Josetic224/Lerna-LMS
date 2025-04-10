@@ -1,4 +1,3 @@
-// AppContext.jsx
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { useAccount } from 'wagmi';
 import { ThemeProvider } from '@mui/material/styles';
@@ -124,8 +123,6 @@ export const AppProvider = ({ children }) => {
             onClose={handleNotificationClose} 
             severity={notification.severity}
             sx={{ width: '100%' }}
-            elevation={6}
-            variant="filled"
           >
             {notification.message}
           </Alert>

@@ -1,7 +1,7 @@
 // wagmiConfig.js
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
-import { mainnet, sepolia } from 'wagmi/chains';
+import { mainnet, sepolia, } from 'wagmi/chains';
 import { http } from 'viem';
 import { createConfig } from 'wagmi';
 

@@ -1,69 +1,45 @@
-// theme.js
 import { createTheme } from '@mui/material/styles';
 
-// Educational LMS color palette
-// Main colors: Deep blue, teal, and amber accents
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#1a237e', // Deep indigo - represents knowledge and wisdom
-      light: '#534bae',
-      dark: '#000051',
-      contrastText: '#ffffff',
+      main: '#3a86ff', // Vibrant blue that works in both themes
+      light: '#6fa8ff',
+      dark: '#2667cc',
     },
     secondary: {
-      main: '#00796b', // Teal - represents growth and progress
-      light: '#48a999',
-      dark: '#004c40',
-      contrastText: '#ffffff',
-    },
-    accent: {
-      main: '#ffc107', // Amber - represents achievement and certification
-      light: '#fff350',
-      dark: '#c79100',
+      main: '#38b2ac', // Teal that's softer than the original mint green
+      light: '#5ec9c4',
+      dark: '#2c8f8a',
     },
     background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
-      dark: '#121212',
-      darkPaper: '#1e1e1e',
+      default: '#f8fafc', // Very light blue-gray background
+      paper: '#ffffff',   // White paper background
     },
     text: {
-      primary: '#212121',
-      secondary: '#616161',
-      disabled: '#9e9e9e',
-      hint: '#757575',
-      lightPrimary: '#f5f5f5',
-      lightSecondary: '#e0e0e0',
+      primary: '#334155', // Slate gray text for better readability
+      secondary: '#64748b', // Light slate for secondary text
     },
-    divider: 'rgba(0, 0, 0, 0.12)',
+    accent: {
+      main: '#e11d48', // Refined rose red accent for important elements
+      light: '#f43f5e',
+      dark: '#be123c',
+    },
+    error: {
+      main: '#ef4444', // Red
+    },
+    warning: {
+      main: '#f59e0b', // Amber
+    },
+    info: {
+      main: '#3b82f6', // Blue
+    },
+    success: {
+      main: '#10b981', // Emerald
+    },
   },
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {
-      fontWeight: 700,
-    },
-    h2: {
-      fontWeight: 600,
-    },
-    h3: {
-      fontWeight: 600,
-    },
-    h4: {
-      fontWeight: 600,
-    },
-    h5: {
-      fontWeight: 500,
-    },
-    h6: {
-      fontWeight: 500,
-    },
-    subtitle1: {
-      fontWeight: 400,
-    },
-    subtitle2: {
-      fontWeight: 400,
-    },
   },
   components: {
     MuiButton: {
@@ -74,15 +50,15 @@ export const theme = createTheme({
           fontWeight: 500,
         },
         containedPrimary: {
-          boxShadow: '0 4px 6px rgba(26, 35, 126, 0.2)',
+          backgroundColor: '#3a86ff',
           '&:hover': {
-            boxShadow: '0 6px 10px rgba(26, 35, 126, 0.3)',
+            backgroundColor: '#2667cc',
           },
         },
         containedSecondary: {
-          boxShadow: '0 4px 6px rgba(0, 121, 107, 0.2)',
+          backgroundColor: '#38b2ac',
           '&:hover': {
-            boxShadow: '0 6px 10px rgba(0, 121, 107, 0.3)',
+            backgroundColor: '#2c8f8a',
           },
         },
       },
@@ -95,36 +71,99 @@ export const theme = createTheme({
           '&:hover': {
             boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
           },
-          transition: 'box-shadow 0.3s ease-in-out',
         },
       },
     },
     MuiAppBar: {
       styleOverrides: {
         root: {
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.08)',
+          backgroundColor: '#3a86ff',
+          color: '#ffffff', // Ensure text is white
+        },
+      },
+    },
+    // Add styles for navbar text elements
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          color: '#ffffff',
+        },
+      },
+    },
+    // Ensure buttons in AppBar have white text
+    MuiAppBar: {
+      defaultProps: {
+        color: 'primary',
+      },
+      styleOverrides: {
+        colorPrimary: {
+          "& .MuiButton-root": {
+            color: '#ffffff',
+          },
+          "& .MuiIconButton-root": {
+            color: '#ffffff',
+          },
+          "& .MuiTypography-root": {
+            color: '#ffffff',
+          },
         },
       },
     },
   },
 });
 
-// Theme with dark mode support
 export const getThemeWithMode = (mode) => {
   return createTheme({
     ...theme,
     palette: {
       ...theme.palette,
       mode: mode,
+      primary: {
+        ...theme.palette.primary,
+        main: mode === 'dark' ? '#3a86ff' : '#3a86ff', // Same blue in both modes for consistency
+      },
+      secondary: {
+        ...theme.palette.secondary,
+        main: mode === 'dark' ? '#5eead4' : '#38b2ac', // Brighter teal in dark mode
+      },
       background: {
         ...theme.palette.background,
-        default: mode === 'dark' ? theme.palette.background.dark : theme.palette.background.default,
-        paper: mode === 'dark' ? theme.palette.background.darkPaper : theme.palette.background.paper,
+        default: mode === 'dark' ? '#0f172a' : '#f8fafc', // Dark blue-slate for dark mode
+        paper: mode === 'dark' ? '#1e293b' : '#ffffff', // Darker blue-slate for paper in dark mode
       },
       text: {
-        primary: mode === 'dark' ? theme.palette.text.lightPrimary : theme.palette.text.primary,
-        secondary: mode === 'dark' ? theme.palette.text.lightSecondary : theme.palette.text.secondary,
+        primary: mode === 'dark' ? '#f1f5f9' : '#334155', // Light slate in dark mode
+        secondary: mode === 'dark' ? '#cbd5e1' : '#64748b', // Lighter slate for secondary text in dark mode
       },
+    },
+    components: {
+      ...(mode === 'dark' ? {
+        MuiAppBar: {
+          styleOverrides: {
+            root: {
+              backgroundColor: '#3a86ff', // Same as light mode for consistency
+              color: '#ffffff', // White text in dark mode
+              '& .MuiButton-root': {
+                color: '#ffffff',
+              },
+              '& .MuiButton-outlined': {
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                color: '#ffffff',
+              },
+              '& .MuiButton-contained': {
+                backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                color: '#ffffff',
+              },
+              '& .MuiIconButton-root': {
+                color: '#ffffff',
+              },
+              '& .MuiTypography-root': {
+                color: '#ffffff',
+              },
+            },
+          },
+        },
+      } : {}),
     },
   });
 };

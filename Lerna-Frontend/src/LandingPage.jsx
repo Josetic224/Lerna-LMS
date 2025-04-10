@@ -1,6 +1,10 @@
 // LandingPage.jsx
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
+import student from '../src/assets/images/students.svg';
+//import students from '../src/assets/images/studentss.svg';
+import LernaLogo from '../src/assets/images/LernaLogo.svg';
+import LernaWLogo from '../src/assets/images/LernaWLogo.svg';
 import { useAppContext } from './AppContext';
 import { 
   AppBar, Toolbar, Typography, Button, Container, Box, Grid, 
@@ -172,20 +176,38 @@ const LandingPage = () => {
             </Box>
             
             {/* Logo */}
-            <Typography
-              variant="h5"
+            <Box
               component="a"
               href="/"
               sx={{
                 mr: 2,
                 flexGrow: { xs: 1, md: 0 },
-                fontWeight: 700,
-                color: 'primary.main',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 textDecoration: 'none',
+                height: '100%',
+                position: 'relative',
+                overflow: 'visible', // Allow logo to overflow if needed
               }}
             >
-              Lerna
-            </Typography>
+              <Box
+                component="img"
+                src={isDarkMode ? LernaWLogo : LernaLogo}
+                alt="Lerna Logo"
+                sx={{
+                  maxWidth: { xs: '120px', sm: '160px', md: '180px' }, // Responsive width control
+                  width: 'auto', // Keep aspect ratio
+                  height: 'auto', // Keep aspect ratio
+                  maxHeight: '44px', // Set maximum height to fit navbar
+                  transform: 'scale(1.95)', // Scale up the logo by 15%
+                  transformOrigin: 'left center', // Scale from left side
+                  position: 'relative', // Needed for proper scaling
+                  display: 'block',
+                }}
+              />
+            </Box>
+
             
             {/* Desktop Navigation */}
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, ml: 4 }}>
@@ -358,180 +380,521 @@ const LandingPage = () => {
       </Drawer>
       
       {/* Hero Section */}
-      <Box
-        sx={{
-          pt: { xs: 10, md: 16 },
-          pb: { xs: 8, md: 12 },
-          background: theme.palette.mode === 'dark' 
-            ? `linear-gradient(45deg, ${theme.palette.primary.dark} 0%, ${theme.palette.background.default} 100%)`
-            : `linear-gradient(45deg, ${theme.palette.primary.light} 0%, ${theme.palette.background.default} 100%)`,
-          clipPath: 'polygon(0 0, 100% 0, 100% 85%, 0 100%)'
+{/* Hero Section - Alternative without image */}
+<Box
+  sx={{
+    pt: { xs: 10, md: 16 },
+    pb: { xs: 8, md: 12 },
+    background: theme.palette.mode === 'dark' 
+      ? `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.background.paper} 100%)`
+      : `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`,
+    clipPath: 'polygon(0 0, 100% 0, 100% 90%, 0 100%)',
+    position: 'relative',
+    overflow: 'hidden',
+    color: 'white'
+  }}
+>
+  {/* Decorative shapes */}
+  <Box sx={{
+    position: 'absolute',
+    width: '500px',
+    height: '500px',
+    borderRadius: '50%',
+    top: '-250px',
+    right: '-100px',
+    background: 'rgba(255,255,255,0.1)',
+    zIndex: 0
+  }} />
+  
+  <Box sx={{
+    position: 'absolute',
+    width: '300px',
+    height: '300px',
+    borderRadius: '50%',
+    bottom: '-100px',
+    left: '10%',
+    background: 'rgba(255,255,255,0.05)',
+    zIndex: 0
+  }} />
+
+  <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+    {/* Centered content approach */}
+    <Box sx={{ 
+      textAlign: 'center', 
+      maxWidth: '900px', 
+      mx: 'auto',
+      px: { xs: 2, md: 0 }
+    }}>
+      <Typography 
+        variant="h1" 
+        component="h1" 
+        fontWeight="bold"
+        gutterBottom
+        sx={{ 
+          fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
+          lineHeight: 1.1,
+          mb: 3
         }}
       >
-        <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Box sx={{ p: { xs: 2, md: 4 } }}>
-                <Typography 
-                  variant="h2" 
-                  component="h1" 
-                  fontWeight="bold"
-                  color={theme.palette.mode === 'dark' ? 'white' : 'primary.dark'}
-                  gutterBottom
-                >
-                  Decentralized Learning with <Typography component="span" variant="h2" fontWeight="bold" color="secondary.main">Blockchain Verification</Typography>
-                </Typography>
-                
-                <Typography 
-                  variant="h6" 
-                  color="text.secondary" 
-                  paragraph 
-                  sx={{ mt: 2, mb: 4 }}
-                >
-                  Lerna is a next-generation on-chain learning management system that brings 
-                  transparency, verifiability, and modular learning to education. 
-                  Earn verifiable credentials while learning at your own pace.
-                </Typography>
-                
-                <Box sx={{ mt: 4, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
-                  {isConnected ? (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      href="/dashboard"
-                      endIcon={<ArrowForwardIcon />}
-                      sx={{ py: 1.5, px: 4, borderRadius: 2 }}
-                    >
-                      Go to Dashboard
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      onClick={openConnectModal}
-                      endIcon={<ArrowForwardIcon />}
-                      sx={{ py: 1.5, px: 4, borderRadius: 2 }}
-                    >
-                      Start Learning Now
-                    </Button>
-                  )}
-                  
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    size="large"
-                    href="#how-it-works"
-                    sx={{ py: 1.5, px: 4, borderRadius: 2 }}
-                  >
-                    Learn More
-                  </Button>
-                </Box>
-              </Box>
-            </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <Box sx={{ 
-                display: 'flex', 
-                justifyContent: 'center',
-                mt: { xs: 4, md: 0 }
-              }}>
-                <Paper 
-                  elevation={6} 
-                  sx={{ 
-                    p: 2, 
-                    bgcolor: 'background.paper',
-                    borderRadius: 4,
-                    width: '100%',
-                    maxWidth: 500,
-                    height: 320,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    overflow: 'hidden'
-                  }}
-                >
-                  <img 
-                    src="/api/placeholder/600/400"
-                    alt="Lerna Platform"
-                    style={{ 
-                      maxWidth: '100%', 
-                      maxHeight: '100%', 
-                      objectFit: 'cover',
-                      borderRadius: 8
-                    }}
-                  />
-                </Paper>
-              </Box>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-
-      {/* Features Section */}
-      <Box id="features" sx={{ py: 10 }}>
-        <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 8 }}>
-            <Chip 
-              label="FEATURES" 
-              color="primary" 
-              size="small"
-              sx={{ mb: 2, fontWeight: 'bold' }}
-            />
-            <Typography variant="h3" component="h2" gutterBottom fontWeight="bold">
-              A Better Way to Learn and Verify Skills
-            </Typography>
-            <Typography 
-              variant="h6" 
-              color="text.secondary" 
-              sx={{ maxWidth: 800, mx: 'auto' }}
-            >
-              Lerna combines blockchain technology with modern learning methodologies 
-              to create a transparent, verifiable educational experience.
+        Decentralized Learning with{' '}
+        <Box 
+          component="span" 
+          sx={{ 
+            color: theme.palette.secondary.light,
+            position: 'relative',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              bottom: '-8px',
+              left: 0,
+              width: '100%',
+              height: '4px',
+              background: theme.palette.secondary.light,
+              borderRadius: '2px'
+            }
+          }}
+        >
+          Blockchain Verification
+        </Box>
+      </Typography>
+      
+      <Typography 
+        variant="h5" 
+        sx={{ 
+          fontWeight: 300,
+          mb: 6,
+          opacity: 0.9,
+          maxWidth: '700px',
+          mx: 'auto'
+        }}
+      >
+        Lerna is a next-generation on-chain learning management system that brings 
+        transparency, verifiability, and modular learning to education.
+      </Typography>
+      
+      {/* Features highlight */}
+      <Grid container spacing={3} sx={{ mb: 5, justifyContent: 'center' }}>
+        <Grid item xs={12} sm={4}>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            p: 2
+          }}>
+            <VerifiedIcon sx={{ fontSize: 40, mb: 1, color: 'secondary.light' }} />
+            <Typography variant="h6" fontWeight="bold">Verified Credentials</Typography>
+            <Typography variant="body2" sx={{ opacity: 0.8 }}>
+              On-chain certification
             </Typography>
           </Box>
+        </Grid>
+        
+        <Grid item xs={12} sm={4}>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            p: 2
+          }}>
+            <AssignmentIcon sx={{ fontSize: 40, mb: 1, color: 'secondary.light' }} />
+            <Typography variant="h6" fontWeight="bold">Modular Learning</Typography>
+            <Typography variant="body2" sx={{ opacity: 0.8 }}>
+              Structured learning paths
+            </Typography>
+          </Box>
+        </Grid>
+        
+        <Grid item xs={12} sm={4}>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            p: 2
+          }}>
+            <SecurityIcon sx={{ fontSize: 40, mb: 1, color: 'secondary.light' }} />
+            <Typography variant="h6" fontWeight="bold">Secure Access</Typography>
+            <Typography variant="body2" sx={{ opacity: 0.8 }}>
+              Wallet-based authentication
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
+      
+      {/* CTA Buttons */}
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        gap: 3,
+        mt: 4,
+        flexDirection: { xs: 'column', sm: 'row' },
+        alignItems: 'center'
+      }}>
+        {isConnected ? (
+          <Button
+            variant="contained"
+            color="secondary"
+            size="large"
+            href="/dashboard"
+            endIcon={<ArrowForwardIcon />}
+            sx={{ 
+              py: 1.5, 
+              px: 4, 
+              borderRadius: 2,
+              fontSize: '1.1rem',
+              fontWeight: 'bold',
+              width: { xs: '100%', sm: 'auto' }
+            }}
+          >
+            Go to Dashboard
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="secondary"
+            size="large"
+            onClick={openConnectModal}
+            endIcon={<ArrowForwardIcon />}
+            sx={{ 
+              py: 1.5, 
+              px: 4, 
+              borderRadius: 2,
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              width: { xs: '100%', sm: 'auto' }
+            }}
+          >
+            Start Learning Now
+          </Button>
+        )}
+        
+        <Button
+          variant="outlined"
+          size="large"
+          href="#how-it-works"
+          sx={{ 
+            py: 1.5, 
+            px: 4, 
+            borderRadius: 2,
+            color: 'white',
+            borderColor: 'rgba(255,255,255,0.5)',
+            '&:hover': {
+              borderColor: 'white',
+              backgroundColor: 'rgba(255,255,255,0.1)'
+            },
+            width: { xs: '100%', sm: 'auto' }
+          }}
+        >
+          Learn More
+        </Button>
+      </Box>
+      
+      {/* Social proof */}
+      {/* <Box sx={{ 
+        mt: 8, 
+        pt: 4,
+        borderTop: '1px solid rgba(255,255,255,0.2)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: { xs: 3, md: 5 }
+      }}>
+        <Typography variant="subtitle2" sx={{ opacity: 0.8 }}>
+          TRUSTED BY EDUCATORS & LEARNERS WORLDWIDE
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <Chip 
+            icon={<SchoolIcon />} 
+            label="1,000+ Active Students" 
+            sx={{ 
+              bgcolor: 'rgba(255,255,255,0.1)', 
+              color: 'white',
+              '& .MuiChip-icon': { color: 'white' }
+            }} 
+          />
+          <Chip 
+            icon={<StorageIcon />} 
+            label="50+ Learning Tracks" 
+            sx={{ 
+              bgcolor: 'rgba(255,255,255,0.1)', 
+              color: 'white',
+              '& .MuiChip-icon': { color: 'white' }
+            }} 
+          />
+          <Chip 
+            icon={<VerifiedIcon />} 
+            label="100% On-Chain Verification" 
+            sx={{ 
+              bgcolor: 'rgba(255,255,255,0.1)', 
+              color: 'white',
+              '& .MuiChip-icon': { color: 'white' }
+            }} 
+          />
+        </Box>
+      </Box> */}
+    </Box>
+  </Container>
+</Box>
+      {/* Features Section */}
+      {/* Features Section - Wide Cards with Enhanced Design */}
+<Box id="features" sx={{ 
+  py: 10,
+  position: 'relative',
+  overflow: 'hidden'
+}}>
+  {/* Background design element */}
+  <Box 
+    sx={{ 
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      width: '50%',
+      height: '100%',
+      background: theme => theme.palette.mode === 'dark' 
+        ? 'radial-gradient(circle at 80% 50%, rgba(25, 118, 210, 0.05) 0%, transparent 60%)'
+        : 'radial-gradient(circle at 80% 50%, rgba(25, 118, 210, 0.05) 0%, transparent 60%)',
+      zIndex: 0
+    }} 
+  />
 
-          <Grid container spacing={4}>
-            {features.map((feature, index) => (
-              <Grid item xs={12} md={4} key={index}>
-                <Card 
+  <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+    <Box sx={{ textAlign: 'center', mb: 8 }}>
+      <Chip 
+        label="FEATURES" 
+        color="primary" 
+        size="small"
+        sx={{ mb: 2, fontWeight: 'bold' }}
+      />
+      <Typography variant="h3" component="h2" gutterBottom fontWeight="bold">
+        A Better Way to Learn and Verify Skills
+      </Typography>
+      <Typography 
+        variant="h6" 
+        color="text.secondary" 
+        sx={{ maxWidth: 800, mx: 'auto' }}
+      >
+        Lerna combines blockchain technology with modern learning methodologies 
+        to create a transparent, verifiable educational experience.
+      </Typography>
+    </Box>
+
+    <Grid container spacing={4} direction="column">
+      {features.map((feature, index) => (
+        <Grid item key={index}>
+          <Card 
+            sx={{ 
+              display: 'flex',
+              borderRadius: 2,
+              overflow: 'hidden',
+              transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-8px)',
+                boxShadow: 6
+              },
+              position: 'relative',
+              background: theme => theme.palette.mode === 'dark' 
+                ? 'linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0))'
+                : 'linear-gradient(to right, white, #f8f9fa)'
+            }}
+            elevation={2}
+          >
+            {/* Right side decorative design elements */}
+            <Box 
+              sx={{ 
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                bottom: 0,
+                width: '30%',
+                overflow: 'hidden',
+                zIndex: 0
+              }}
+            >
+              {/* Large circle */}
+              <Box 
+                sx={{ 
+                  position: 'absolute',
+                  right: -40,
+                  top: '50%',
+                  marginTop: '-60px',
+                  width: 120,
+                  height: 120,
+                  borderRadius: '50%',
+                  border: `3px dashed ${feature.color}40`,
+                  opacity: 0.8
+                }} 
+              />
+              
+              {/* Small circle */}
+              <Box 
+                sx={{ 
+                  position: 'absolute',
+                  right: 40,
+                  bottom: index % 2 === 0 ? 20 : 'auto',
+                  top: index % 2 === 1 ? 20 : 'auto',
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  backgroundColor: `${feature.color}20`,
+                  boxShadow: `0 0 0 8px ${feature.color}10`
+                }} 
+              />
+              
+              {/* Decorative dots pattern */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  right: 100,
+                  top: index % 2 === 0 ? 20 : 'auto',
+                  bottom: index % 2 === 1 ? 20 : 'auto',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '8px',
+                }}
+              >
+                {[...Array(9)].map((_, i) => (
+                  <Box
+                    key={i}
+                    sx={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: `${feature.color}60`,
+                      opacity: (i % 3) * 0.2 + 0.2 // Creates a gradient effect
+                    }}
+                  />
+                ))}
+              </Box>
+            </Box>
+
+            {/* Accent color bar on the side */}
+            <Box 
+              sx={{ 
+                width: 8,
+                backgroundColor: feature.color,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                py: 2
+              }}
+            >
+              {/* Decorative dots on the color bar */}
+              {[...Array(3)].map((_, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    width: '4px',
+                    height: '4px',
+                    borderRadius: '50%',
+                    backgroundColor: 'white',
+                    opacity: 0.7
+                  }}
+                />
+              ))}
+            </Box>
+
+            <CardContent 
+              sx={{ 
+                py: 4, 
+                px: 5,
+                display: 'flex',
+                alignItems: 'center',
+                position: 'relative',
+                zIndex: 1,
+                width: '100%'
+              }}
+            >
+              {/* Enhanced Icon */}
+              <Box
+                sx={{
+                  position: 'relative',
+                  mr: 4
+                }}
+              >
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '16px',
+                    transform: 'rotate(45deg)',
+                    backgroundColor: `${feature.color}30`,
+                    top: '6px',
+                    left: '6px'
+                  }}
+                />
+                <Avatar 
                   sx={{ 
-                    height: '100%', 
+                    bgcolor: feature.color,
+                    width: 64,
+                    height: 64,
+                    boxShadow: `0 8px 16px -2px ${feature.color}50`,
+                    position: 'relative',
+                    zIndex: 1
+                  }}
+                >
+                  {feature.icon}
+                </Avatar>
+              </Box>
+              
+              <Box sx={{ flexGrow: 1, maxWidth: '60%' }}>
+                <Typography 
+                  variant="h5" 
+                  component="h3" 
+                  gutterBottom 
+                  fontWeight="600"
+                  sx={{
                     display: 'flex',
-                    flexDirection: 'column',
-                    transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: 6
+                    alignItems: 'center',
+                    '&::after': {
+                      content: '""',
+                      display: 'inline-block',
+                      width: '40px',
+                      height: '2px',
+                      backgroundColor: feature.color,
+                      ml: 2,
+                      borderRadius: '1px'
                     }
                   }}
-                  elevation={2}
                 >
-                  <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                    <Avatar 
-                      sx={{ 
-                        bgcolor: feature.color,
-                        width: 56,
-                        height: 56,
-                        mb: 2
-                      }}
-                    >
-                      {feature.icon}
-                    </Avatar>
-                    <Typography variant="h5" component="h3" gutterBottom fontWeight="500">
-                      {feature.title}
-                    </Typography>
-                    <Typography color="text.secondary">
-                      {feature.description}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
+                  {feature.title}
+                </Typography>
+                <Typography color="text.secondary">
+                  {feature.description}
+                </Typography>
+              </Box>
+              
+              {/* Arrow icon on right */}
+              <Box 
+                sx={{ 
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  ml: 'auto',
+                  mr: 2,
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  backgroundColor: 'background.paper',
+                  color: feature.color,
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    backgroundColor: feature.color,
+                    color: 'white',
+                    transform: 'translateX(5px)',
+                  }
+                }}
+              >
+                <ArrowForwardIcon fontSize="small" />
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  </Container>
+</Box>
 
       {/* Roles Section */}
       <Box 
@@ -715,7 +1078,7 @@ const LandingPage = () => {
                 }}
               >
                 <img
-                  src="/api/placeholder/600/500"
+                  src={student}
                   alt="Learning path visualization"
                   style={{
                     width: '100%',
@@ -911,9 +1274,14 @@ const LandingPage = () => {
             
             <Box sx={{ display: 'flex', gap: 2 }}>
               <IconButton color="inherit" aria-label="twitter">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                {/* <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                </svg>
+                </svg> */}
+
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+  <path d="M14.095479,10.316482L22.286354,1h-1.940718l-7.115352,8.087682L7.551414,1H1l8.589488,12.231093L1,23h1.940717l7.509372-8.542861L16.448587,23H23L14.095479,10.316482z M11.436522,13.338465l-0.871624-1.218704l-6.924311-9.68815h2.981339l5.58978,7.82155l0.867949,1.218704l7.26506,10.166271h-2.981339L11.436522,13.338465z"/>
+</svg>
+
               </IconButton>
               <IconButton color="inherit" aria-label="github">
                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
