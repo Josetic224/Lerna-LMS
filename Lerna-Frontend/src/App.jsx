@@ -1,47 +1,11 @@
+// App.jsx - Updated with blockchain integration
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import LandingPage from './LandingPage';
+import StudentDashboard from './StudentDashboard';
+import MentorDashboard from './MentorDashboard';
+import AdminDashboard from './AdminDashboard';
 import { useAppContext } from './AppContext';
-import { Box, Container, Typography, Paper } from '@mui/material';
-
-const StudentDashboard = () => (
-  <Container maxWidth="lg" sx={{ py: 4 }}>
-    <Paper elevation={2} sx={{ p: 4, borderRadius: 2, bgcolor: '#4A90E2' }}>
-      <Typography variant="h4" component="h1" gutterBottom align="center" color="#fff">
-        Student Dashboard
-      </Typography>
-      <Typography variant="body1" align="center" color="text.secondary">
-        Welcome to your personalized learning journey. Your courses and progress will appear here.
-      </Typography>
-    </Paper>
-  </Container>
-);
-
-const MentorDashboard = () => (
-  <Container maxWidth="lg" sx={{ py: 4 }}>
-    <Paper elevation={2} sx={{ p: 4, borderRadius: 2, bgcolor: '#50E3C2' }}>
-      <Typography variant="h4" component="h1" gutterBottom align="center" color="#fff">
-        Mentor Dashboard
-      </Typography>
-      <Typography variant="body1" align="center" color="text.secondary">
-        Welcome to your mentoring hub. Your students and assignments will appear here.
-      </Typography>
-    </Paper>
-  </Container>
-);
-
-const AdminDashboard = () => (
-  <Container maxWidth="lg" sx={{ py: 4 }}>
-    <Paper elevation={2} sx={{ p: 4, borderRadius: 2, bgcolor: '#D0021B' }}>
-      <Typography variant="h4" component="h1" gutterBottom align="center" color="#fff">
-        Admin Dashboard
-      </Typography>
-      <Typography variant="body1" align="center" color="text.secondary">
-        Platform management and analytics center.
-      </Typography>
-    </Paper>
-  </Container>
-);
 
 function App() {
   const { isDarkMode, isAuthenticated, userRole } = useAppContext();

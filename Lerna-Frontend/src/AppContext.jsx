@@ -1,9 +1,11 @@
+// AppContext.jsx
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { useAccount } from 'wagmi';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getThemeWithMode } from './theme';
 import { Snackbar, Alert, CircularProgress, Backdrop } from '@mui/material';
+import { useUserRole, useRegisterAsStudent, useRegisterAsMentor } from './hooks/useContracts';
 
 const AppContext = createContext();
 
@@ -11,17 +13,34 @@ export const useAppContext = () => useContext(AppContext);
 
 export const AppProvider = ({ children }) => {
   const { address, isConnected } = useAccount();
-  const [userRole, setUserRole] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => 
     localStorage.theme === 'dark' || 
     (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
   );
+  const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState({
     open: false,
     message: '',
     severity: 'info' // 'error', 'warning', 'info', 'success'
   });
+
+  // Get user role from smart contract
+  const { userRole, isLoading: isRoleLoading, isError: isRoleError } = useUserRole(address);
+  
+  // Register hooks
+  const { 
+    registerAsStudent, 
+    isLoading: isStudentRegLoading, 
+    isSuccess: isStudentRegSuccess,
+    isError: isStudentRegError
+  } = useRegisterAsStudent();
+  
+  const { 
+    registerAsMentor, 
+    isLoading: isMentorRegLoading, 
+    isSuccess: isMentorRegSuccess,
+    isError: isMentorRegError
+  } = useRegisterAsMentor();
 
   // Create theme based on mode
   const theme = useMemo(() => getThemeWithMode(isDarkMode ? 'dark' : 'light'), [isDarkMode]);
@@ -50,39 +69,43 @@ export const AppProvider = ({ children }) => {
     setNotification({ ...notification, open: false });
   };
 
-  // Fetch user role when wallet connects
+  // Handle user registration responses
   useEffect(() => {
-    if (isConnected && address) {
-      setIsLoading(true);
-      
-      // Simulate API call to fetch user role
-      const fetchUserRole = async () => {
-        try {
-          // In a real app, this would be an API call to your backend
-          // await userAPI.getUserRole(address)
-          
-          // Simulate network delay
-          await new Promise(resolve => setTimeout(resolve, 500));
-          
-          // For demo, randomly assign a role (in real app, this would come from your backend)
-          const roles = ['student', 'mentor', 'admin'];
-          const assignedRole = roles[0]; // Always student for now
-          
-          setUserRole(assignedRole);
-          showNotification(`Welcome back! You're logged in as a ${assignedRole}`, 'success');
-        } catch (error) {
-          console.error('Error fetching user role:', error);
-          showNotification('Error fetching your account details', 'error');
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      
-      fetchUserRole();
-    } else {
-      setUserRole(null);
+    if (isStudentRegSuccess) {
+      showNotification('Successfully registered as a student!', 'success');
     }
-  }, [isConnected, address]);
+    if (isStudentRegError) {
+      showNotification('Failed to register as a student. Please try again.', 'error');
+    }
+  }, [isStudentRegSuccess, isStudentRegError]);
+
+  useEffect(() => {
+    if (isMentorRegSuccess) {
+      showNotification('Successfully registered as a mentor!', 'success');
+    }
+    if (isMentorRegError) {
+      showNotification('Failed to register as a mentor. Please try again.', 'error');
+    }
+  }, [isMentorRegSuccess, isMentorRegError]);
+
+  // Set global loading state when role is being fetched
+  useEffect(() => {
+    setIsLoading(isRoleLoading || isStudentRegLoading || isMentorRegLoading);
+  }, [isRoleLoading, isStudentRegLoading, isMentorRegLoading]);
+
+  // Handle role loading errors
+  useEffect(() => {
+    if (isRoleError) {
+      showNotification('Error loading user role from blockchain. Please check your network connection.', 'error');
+    }
+  }, [isRoleError]);
+
+  // Show welcome message when user connects and has a role
+  useEffect(() => {
+    if (isConnected && userRole && !isRoleLoading) {
+      showNotification(`Welcome back! You're logged in as a ${userRole}`, 'success');
+    }
+  }, [isConnected, userRole, isRoleLoading]);
 
   // Context value
   const value = {
@@ -92,6 +115,8 @@ export const AppProvider = ({ children }) => {
     toggleTheme,
     isAuthenticated: isConnected && userRole !== null,
     showNotification,
+    registerAsStudent,
+    registerAsMentor,
   };
 
   return (

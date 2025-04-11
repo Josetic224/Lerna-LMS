@@ -75,27 +75,14 @@ export const theme = createTheme({
       },
     },
     MuiAppBar: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#3a86ff',
-          color: '#ffffff', // Ensure text is white
-        },
-      },
-    },
-    // Add styles for navbar text elements
-    MuiToolbar: {
-      styleOverrides: {
-        root: {
-          color: '#ffffff',
-        },
-      },
-    },
-    // Ensure buttons in AppBar have white text
-    MuiAppBar: {
       defaultProps: {
         color: 'primary',
       },
       styleOverrides: {
+        root: {
+          backgroundColor: '#3a86ff',
+          color: '#ffffff',
+        },
         colorPrimary: {
           "& .MuiButton-root": {
             color: '#ffffff',
@@ -106,6 +93,13 @@ export const theme = createTheme({
           "& .MuiTypography-root": {
             color: '#ffffff',
           },
+        },
+      },
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          color: '#ffffff',
         },
       },
     },
